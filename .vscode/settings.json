@@ -1,0 +1,12 @@
+{
+  "workbench.fontAliasing": "antialiased",
+  "workbench.preferredDarkColorTheme": "Aura Dark (Soft Text)",
+  "workbench.editor.decorations.colors": true,
+  "workbench.view.alwaysShowHeaderActions": false,
+  "workbench.editor.closeOnFileDelete": true,
+  "editor.formatOnSave": true,
+  "diffEditor.codeLens": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.defaultColorDecorators": true,
+  "editor.fontFamily": "Geist Mono"
+}
