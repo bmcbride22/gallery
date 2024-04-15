@@ -31,16 +31,20 @@ export const images = createTable(
     updatedAt: timestamp("updated_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
+    userId: varchar("user", { length: 256 })
+      .notNull()
+      .references(() => users.clerkId),
   },
   (example) => ({
     nameIndex: index("image_name_idx").on(example.name),
   }),
+  // Add a foreign key to the user table
 );
 export const users = createTable(
   "users",
   {
-    id: serial("id").primaryKey(),
-    clerkId: varchar("clerk_id", { length: 256 }).notNull(),
+    id: serial("id").notNull(),
+    clerkId: varchar("clerk_id", { length: 256 }).primaryKey().notNull(),
     name: varchar("name", { length: 256 }).notNull(),
     email: varchar("url", { length: 1024 }).notNull(),
     createdAt: timestamp("created_at")
