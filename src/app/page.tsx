@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+import Image from "next/image";
 import { getMyImages } from "~/server/queries";
 export default async function HomePage() {
   const images = await getMyImages();
@@ -14,12 +15,12 @@ export default async function HomePage() {
               key={image.id + "-" + index}
               className="relative w-48 p-4 sm:w-1/4"
             >
-              <img
+              <Image
                 className="h-full w-full rounded-lg object-cover"
                 src={image.url}
-                alt="gallery"
-                width={200}
-                height={200}
+                alt={image.name}
+                height={240}
+                width={240}
               />
             </div>
           ))}
