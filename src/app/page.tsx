@@ -1,12 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { db } from "~/server/db";
 export const dynamic = "force-dynamic";
-import type { images as UserImage } from "~/server/db/schema";
+import { getMyImages } from "~/server/queries";
 export default async function HomePage() {
-  const images = await db.query.images.findMany({
-    orderBy: (model, { desc }) => desc(model.id),
-  });
+  const images = await getMyImages();
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
