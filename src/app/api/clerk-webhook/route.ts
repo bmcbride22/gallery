@@ -1,14 +1,14 @@
 import { db } from "~/server/db";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { Webhook } from "svix";
-import type { WebhookOptions } from "svix";
 import { headers } from "next/headers";
 import type { WebhookEvent } from "@clerk/nextjs/server";
-import { profile } from "console";
+import { insertUserSchema, users } from "~/server/db/schema";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
+  console.log("Webhook received");
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
@@ -32,6 +32,7 @@ export async function POST(req: Request) {
 
   // Get the body
   const body = JSON.stringify(await req.json());
+  console.log("Webhook body:", body);
 
   // Create a new Svix instance with your secret.
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get the ID and type
+  // Get the ID and type or throw
   if (!evt.data.id || !evt.type) {
     return new NextResponse("Error occured -- no event data or type", {
       status: 400,
@@ -61,7 +62,7 @@ export async function POST(req: Request) {
   }
   const clerkId = evt.data.id;
   const eventType = evt.type;
-
+  console.log(`Webhook with and ID of ${clerkId} and type of ${eventType}`);
   if (eventType === "user.created" || eventType === "user.updated") {
     const firstName = evt.data.first_name;
     const lastName = evt.data.last_name;
@@ -77,23 +78,16 @@ export async function POST(req: Request) {
       });
     }
     const email = emailObject.email_address;
-
-    await db.users.upsert({
-      where: { clerkId: clerkId },
-      update: {
-        email,
-        name,
-      },
-      create: {
-        clerkId,
-        email,
-        name: name || "",
-      },
+    const user = insertUserSchema.parse({
+      clerkId,
+      email,
+      name: name || "",
+    });
+    await db.insert(users).values(user).onConflictDoUpdate({
+      target: users.clerkId,
+      set: user,
     });
   }
-
-  console.log(`Webhook with and ID of ${clerkId} and type of ${eventType}`);
-  console.log("Webhook body:", body);
 
   return new NextResponse("", { status: 200 });
 }

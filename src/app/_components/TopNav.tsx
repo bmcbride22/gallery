@@ -9,9 +9,11 @@ export default async function Navbar() {
   return (
     <header className="flex items-center justify-between border-b-[1px] border-violet-800 bg-gradient-to-t from-violet-950 to-violet-800 px-4 py-4">
       <aside className="flex items-center gap-[2px]">
-        <p className="text-3xl font-bold text-white">Gallery </p>
+        <Link href={"/"} className="text-3xl font-bold text-white">
+          Gallery
+        </Link>
       </aside>
-      <nav className="absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] transform md:block">
+      <nav className=" text-white ">
         <ul className="flex list-none items-center gap-4">
           <li>
             <Link href="#">Products</Link>
