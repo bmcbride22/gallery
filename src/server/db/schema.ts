@@ -33,7 +33,7 @@ export const images = createTable(
       .notNull(),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+    nameIndex: index("image_name_idx").on(example.name),
   }),
 );
 export const users = createTable(
@@ -51,7 +51,7 @@ export const users = createTable(
       .notNull(),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-    clerkIndex: index("clerk_idx").on(example.clerkId),
+    nameIndex: index("user_name_idx").on(example.name),
+    clerkIndex: index("user_clerk_idx").on(example.clerkId),
   }),
 );
