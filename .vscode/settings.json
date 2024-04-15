@@ -8,5 +8,12 @@
   "diffEditor.codeLens": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.defaultColorDecorators": true,
-  "editor.fontFamily": "Geist Mono"
+  "editor.fontFamily": "Geist Mono",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.experimental.tsserver.web.typeAcquisition.enabled": true,
+  "typescript.disableAutomaticTypeAcquisition": false,
+  "js/ts.implicitProjectConfig.target": "ESNext",
+  "typescript.tsserver.enableTracing": true,
+  "workbench.editor.navigationScope": "editorGroup",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
