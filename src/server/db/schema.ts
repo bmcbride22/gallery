@@ -36,3 +36,22 @@ export const images = createTable(
     nameIndex: index("name_idx").on(example.name),
   }),
 );
+export const users = createTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    clerkId: varchar("clerk_id", { length: 256 }).notNull(),
+    name: varchar("name", { length: 256 }).notNull(),
+    email: varchar("url", { length: 1024 }).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (example) => ({
+    nameIndex: index("name_idx").on(example.name),
+    clerkIndex: index("clerk_idx").on(example.clerkId),
+  }),
+);

@@ -34,11 +34,13 @@ export async function POST(req: Request) {
   const body = JSON.stringify(await req.json());
 
   // Create a new Svix instance with your secret.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const wh = new Webhook(WEBHOOK_SECRET);
   let evt: WebhookEvent;
 
   // Verify the payload with the headers
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     evt = wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
@@ -75,20 +77,17 @@ export async function POST(req: Request) {
       });
     }
     const email = emailObject.email_address;
-    const profileImage = evt.data.image_url;
 
     await db.users.upsert({
       where: { clerkId: clerkId },
       update: {
         email,
         name,
-        profileImage,
       },
       create: {
         clerkId,
         email,
         name: name || "",
-        profileImage: profileImage || "",
       },
     });
   }
