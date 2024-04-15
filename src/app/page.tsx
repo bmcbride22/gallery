@@ -14,8 +14,11 @@ export default async function HomePage() {
           Create <span className="text-[hsl(280,100%,70%)]">Gallery</span> App
         </h1>
         <div className="flex flex-wrap justify-center gap-6">
-          {[...images, ...images, ...images].map((image) => (
-            <div key={image.id} className="relative w-48 p-4 sm:w-1/4">
+          {[...images, ...images, ...images].map((image, index) => (
+            <div
+              key={image.id + "-" + index}
+              className="relative w-48 p-4 sm:w-1/4"
+            >
               <img
                 className="h-full w-full rounded-lg object-cover"
                 src={image.url}

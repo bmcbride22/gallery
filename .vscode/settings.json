@@ -9,7 +9,7 @@
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.defaultColorDecorators": true,
   "editor.fontFamily": "Geist Mono",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.enablePromptUseWorkspaceTsdk": false,
   "typescript.experimental.tsserver.web.typeAcquisition.enabled": true,
   "typescript.disableAutomaticTypeAcquisition": false,
   "js/ts.implicitProjectConfig.target": "ESNext",

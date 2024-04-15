@@ -1,11 +1,12 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { MenuIcon } from "lucide-react";
-import Image from "next/image";
+"use client";
+import { SignIn, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { UploadButton } from "~/lib/utils/uploadthing";
 // import { ModeToggle } from "./darktoggle";
-// import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-export default async function Navbar() {
+export default function Navbar() {
+  const router = useRouter();
   return (
     <header className="flex items-center justify-between border-b-[1px] border-violet-800 bg-gradient-to-t from-violet-950 to-violet-800 px-4 py-4">
       <aside className="flex items-center gap-[2px]">
@@ -38,7 +39,7 @@ export default async function Navbar() {
       <aside className="flex items-center gap-4">
         {/* <ModeToggle /> */}
 
-        <Link
+        {/* <Link
           href="/dashboard"
           className="relative inline-flex h-10 overflow-hidden rounded-full p-[2px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
         >
@@ -47,11 +48,20 @@ export default async function Navbar() {
             <SignedIn>Dashboard</SignedIn>
             <SignedOut>Sign In</SignedOut>
           </span>
-        </Link>
+        </Link> */}
         <SignedIn>
-          <UserButton afterSignOutUrl="/" />
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={() => {
+              router.refresh();
+            }}
+          />
+          <UserButton />
         </SignedIn>
-        <MenuIcon className="md:hidden" />
+        <SignedOut>
+          <SignIn />
+        </SignedOut>
+        {/* <MenuIcon className="md:hidden" /> */}
       </aside>
     </header>
   );
