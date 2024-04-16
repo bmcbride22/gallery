@@ -3,7 +3,9 @@ import { SignIn, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UploadButton } from "~/lib/utils/uploadthing";
-// import { ModeToggle } from "./darktoggle";
+import { ModeToggle } from "./ModeToggle";
+import { DropdownMenuIcon } from "@radix-ui/react-icons";
+import { SimpleUploadButton } from "./SimpleUploadButton";
 
 export default function TopNav() {
   const router = useRouter();
@@ -37,31 +39,15 @@ export default function TopNav() {
         </ul>
       </nav>
       <aside className="flex items-center gap-4">
-        {/* <ModeToggle /> */}
-
-        {/* <Link
-          href="/dashboard"
-          className="relative inline-flex h-10 overflow-hidden rounded-full p-[2px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-        >
-          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-          <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-            <SignedIn>Dashboard</SignedIn>
-            <SignedOut>Sign In</SignedOut>
-          </span>
-        </Link> */}
+        <ModeToggle />
         <SignedIn>
-          <UploadButton
-            endpoint="imageUploader"
-            onClientUploadComplete={() => {
-              router.refresh();
-            }}
-          />
+          <SimpleUploadButton />
           <UserButton />
         </SignedIn>
         <SignedOut>
           <SignIn />
         </SignedOut>
-        {/* <MenuIcon className="md:hidden" /> */}
+        <DropdownMenuIcon className="md:hidden" />
       </aside>
     </header>
   );

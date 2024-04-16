@@ -1,8 +1,9 @@
 "use client";
 
+import { LoaderCircle, CloudUpload } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { useUploadThing } from "~/lib/utils/uploadthing";
-// import { toast } from "sonner";
 // import { usePostHog } from "posthog-js/react";
 
 // inferred input off useUploadThing
@@ -79,24 +80,27 @@ export function SimpleUploadButton() {
   const { inputProps } = useUploadThingInputProps("imageUploader", {
     onUploadBegin() {
       //   posthog.capture("upload_begin");
-      //   toast(
-      //     <div className="flex items-center gap-2 text-white">
-      //       <LoadingSpinnerSVG /> <span className="text-lg">Uploading...</span>
-      //     </div>,
-      //     {
-      //       duration: 100000,
-      //       id: "upload-begin",
-      //     },
-      //   );
+      toast(
+        <div className="flex items-center gap-2 text-white">
+          <LoaderCircle className="animate-spin" />
+          <span className="text-lg">Uploading...</span>
+        </div>,
+        {
+          duration: 30000,
+          id: "upload-begin",
+        },
+      );
     },
     onUploadError(error) {
       //   posthog.capture("upload_error", { error });
-      //   toast.dismiss("upload-begin");
-      //   toast.error("Upload failed");
+      toast.dismiss("upload-begin");
+      toast.error("Upload failed");
     },
     onClientUploadComplete() {
-      //   toast.dismiss("upload-begin");
-      //   toast("Upload complete!");
+      toast.dismiss("upload-begin");
+      toast.success(
+        <span className="text-lg text-white">Upload Complete!</span>,
+      );
 
       router.refresh();
     },
@@ -105,7 +109,7 @@ export function SimpleUploadButton() {
   return (
     <div>
       <label htmlFor="upload-button" className="cursor-pointer">
-        <UploadSVG />
+        <CloudUpload />
       </label>
       <input
         id="upload-button"

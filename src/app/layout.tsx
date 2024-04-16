@@ -8,7 +8,8 @@ import TopNav from "~/app/_components/TopNav";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
-// import { Toaster } from "~/components/ui/sonner";
+import { ThemeProvider } from "~/lib/providers/theme-provider";
+import { Toaster } from "~/components/ui/sonner";
 // import { CSPostHogProvider } from "./_analytics/provider";
 
 const inter = Inter({
@@ -33,24 +34,23 @@ export default function RootLayout({
     <ClerkProvider>
       {/* <CSPostHogProvider> */}
       <html lang="en">
-        <NextSSRPlugin
-          /**
-           * The `extractRouterConfig` will extract **only** the route configs
-           * from the router to prevent additional information from being
-           * leaked to the client. The data passed to the client is the same
-           * as if you were to fetch `/api/uploadthing` directly.
-           */
-          routerConfig={extractRouterConfig(ourFileRouter)}
-        />
-        <body className={`font-sans ${inter.variable} dark`}>
-          <div className="grid h-screen grid-rows-[auto,1fr]">
-            <TopNav />
-            <main className="overflow-y-scroll">{children}</main>
-            {modal}
-          </div>
-          <div id="modal-root" />
-          {/* <Toaster /> */}
-        </body>
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <body className={`font-sans ${inter.variable}`}>
+            <div className="grid h-screen grid-rows-[auto,1fr]">
+              <TopNav />
+              <main className="overflow-y-scroll">{children}</main>
+              {modal}
+            </div>
+            <div id="modal-root" />
+            <Toaster />
+          </body>
+        </ThemeProvider>
       </html>
       {/* </CSPostHogProvider> */}
     </ClerkProvider>
