@@ -1,8 +1,10 @@
 export const dynamic = "force-dynamic";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { getMyImages } from "~/server/queries";
-export default async function HomePage() {
+
+async function Images() {
   const images = await getMyImages();
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -13,10 +15,11 @@ export default async function HomePage() {
         <div className="flex flex-wrap justify-center gap-6">
           {images.map((image) => (
             <div key={image.id} className="relative w-48 p-4 sm:w-1/4">
-              <Link href={`/images/${image.id}`}>
+              <Link href={`/img/${image.id}`}>
                 <Image
-                  className="h-full w-full rounded-lg object-cover"
                   src={image.url}
+                  style={{ objectFit: "contain" }}
+                  className="h-full w-full rounded-lg object-cover"
                   alt={image.name}
                   height={240}
                   width={240}
@@ -26,6 +29,21 @@ export default async function HomePage() {
           ))}
         </div>
       </div>
+    </main>
+  );
+}
+
+export default async function HomePage() {
+  return (
+    <main className="">
+      <SignedOut>
+        <div className="h-full w-full text-center text-2xl">
+          Please sign in above
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <Images />
+      </SignedIn>
     </main>
   );
 }

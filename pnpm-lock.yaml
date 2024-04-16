@@ -27,7 +27,7 @@ dependencies:
     specifier: ^0.368.0
     version: 0.368.0(react@18.2.0)
   next:
-    specifier: ^14.1.3
+    specifier: ^14.2.1
     version: 14.2.1(react-dom@18.2.0)(react@18.2.0)
   ngrok:
     specifier: 5.0.0-beta.2

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { UploadButton } from "~/lib/utils/uploadthing";
 // import { ModeToggle } from "./darktoggle";
 
-export default function Navbar() {
+export default function TopNav() {
   const router = useRouter();
   return (
     <header className="flex items-center justify-between border-b-[1px] border-violet-800 bg-gradient-to-t from-violet-950 to-violet-800 px-4 py-4">
