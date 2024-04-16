@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { getMyImages } from "~/server/queries";
 export default async function HomePage() {
   const images = await getMyImages();
@@ -10,18 +11,17 @@ export default async function HomePage() {
           Create <span className="text-[hsl(280,100%,70%)]">Gallery</span> App
         </h1>
         <div className="flex flex-wrap justify-center gap-6">
-          {[...images, ...images, ...images].map((image, index) => (
-            <div
-              key={image.id + "-" + index}
-              className="relative w-48 p-4 sm:w-1/4"
-            >
-              <Image
-                className="h-full w-full rounded-lg object-cover"
-                src={image.url}
-                alt={image.name}
-                height={240}
-                width={240}
-              />
+          {images.map((image) => (
+            <div key={image.id} className="relative w-48 p-4 sm:w-1/4">
+              <Link href={`/images/${image.id}`}>
+                <Image
+                  className="h-full w-full rounded-lg object-cover"
+                  src={image.url}
+                  alt={image.name}
+                  height={240}
+                  width={240}
+                />
+              </Link>
             </div>
           ))}
         </div>

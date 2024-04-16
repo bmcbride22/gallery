@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { extractRouterConfig } from "uploadthing/server";
+import React from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,8 +21,10 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <ClerkProvider>
@@ -38,6 +41,8 @@ export default function RootLayout({
           />
           <TopNav />
           {children}
+          {modal}
+          <div id="modal-root" />
         </body>
       </html>
     </ClerkProvider>
