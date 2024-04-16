@@ -1,4 +1,3 @@
-import { getImage } from "~/server/queries";
 import { Modal } from "./modal";
 import { FullPageImageView } from "~/common/full-page-image-view";
 
