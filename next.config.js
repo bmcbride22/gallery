@@ -1,3 +1,4 @@
+// Injected content via Sentry wizard below
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
@@ -6,6 +7,16 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const coreConfig = {
+  images: {
+    remotePatterns: [{ hostname: "utfs.io" }],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   async rewrites() {
     return [
       {
@@ -18,30 +29,16 @@ const coreConfig = {
       },
     ];
   },
-  // This is required to support PostHog trailing slash API requests
-  skipTrailingSlashRedirect: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "utfs.io",
-        port: "",
-      },
-    ],
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
+
 import { withSentryConfig } from "@sentry/nextjs";
+
 const config = withSentryConfig(
   coreConfig,
   {
     // For all available options, see:
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+    // https://github.com/getsentry/sentry-webpack-plugin#options
+
     // Suppresses source map uploading logs during build
     silent: true,
     org: "headmaster-em",
@@ -57,8 +54,7 @@ const config = withSentryConfig(
     // Transpiles SDK to be compatible with IE11 (increases bundle size)
     transpileClientSDK: true,
 
-    // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-    // This can increase your server load as well as your hosting bill.
+    // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers. (increases server load)
     // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
     // side errors will fail.
     tunnelRoute: "/monitoring",
@@ -76,6 +72,5 @@ const config = withSentryConfig(
     automaticVercelMonitors: true,
   },
 );
-export default config;
 
-// Injected content via Sentry wizard below
+export default config;

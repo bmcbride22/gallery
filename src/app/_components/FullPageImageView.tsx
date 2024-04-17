@@ -1,8 +1,8 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { permanentRedirect, redirect } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
-// import { Button } from "~/components/ui/button";
 import { deleteMyImage, getImage } from "~/server/queries";
 
 export async function FullPageImageView(props: { photoId: string }) {
@@ -13,9 +13,6 @@ export async function FullPageImageView(props: { photoId: string }) {
   const userId = image.userId;
   const userInfo = await clerkClient.users.getUser(userId);
   const currentUser = auth();
-  console.log("current user", currentUser.userId);
-  console.log("image user", image.userId);
-  console.log(currentUser.userId === image.userId);
 
   return (
     <div className="flex h-full w-screen min-w-0 items-center justify-center text-white">
@@ -41,13 +38,12 @@ export async function FullPageImageView(props: { photoId: string }) {
               action={async () => {
                 "use server";
                 try {
-                  // Mutate data
                   await deleteMyImage(idAsNumber);
                 } catch (e) {
                   throw new Error("Failed to delete");
                 }
-                // Reroute back to the homepage in server action
-                redirect("/");
+                revalidatePath("/");
+                permanentRedirect("/");
               }}
             >
               <Button type="submit" variant="destructive">
