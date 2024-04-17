@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession, useUser } from "@clerk/nextjs";
 import { LoaderCircle, CloudUpload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
@@ -35,24 +34,12 @@ const useUploadThingInputProps = (...args: Input) => {
 
 export function SimpleUploadButton() {
   const router = useRouter();
-  // const { session } = useSession();
-  // if (!session || session === null || session === undefined)
-  //   throw new Error("Session not found");
-  // const user = session.user;
-  // if (!user || user === null || user === undefined)
-  //   throw new Error("User not logged in");
-  // {
-  //       userId: user.id,
-  //       userEmail: user.primaryEmailAddress,
-  //       userName: user.fullName,
-  //       sessionId: session.id,
-  //     }
 
   const posthog = usePostHog();
 
   const { inputProps } = useUploadThingInputProps("imageUploader", {
     onUploadBegin() {
-      posthog.capture("upload_begin");
+      posthog.capture("Upload attempt started");
       toast(
         <div className="flex items-center gap-2 text-white">
           <LoaderCircle className="animate-spin" />
@@ -65,7 +52,7 @@ export function SimpleUploadButton() {
       );
     },
     onUploadError(error) {
-      posthog.capture("upload_error", {
+      posthog.capture("Upload failed", {
         error,
       });
       toast.dismiss("upload-begin");
