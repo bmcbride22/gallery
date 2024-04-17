@@ -1,6 +1,8 @@
-import { clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
 // import { Button } from "~/components/ui/button";
-import { getImage } from "~/server/queries";
+import { deleteMyImage, getImage } from "~/server/queries";
 
 export async function FullPageImageView(props: { photoId: string }) {
   const idAsNumber = Number(props.photoId);
@@ -10,6 +12,10 @@ export async function FullPageImageView(props: { photoId: string }) {
 
   const userId = image.userId;
   const userInfo = await clerkClient.users.getUser(userId);
+  const currentUser = auth();
+  console.log("current user", currentUser.userId);
+  console.log("image user", image.userId);
+  console.log(currentUser.userId === image.userId);
 
   return (
     <div className="flex h-full w-screen min-w-0 items-center justify-center text-white">
@@ -30,17 +36,18 @@ export async function FullPageImageView(props: { photoId: string }) {
         </div>
 
         <div className="p-2">
-          <form
-            action={async () => {
-              "use server";
-
-              //   await deleteImage(idAsNumber);
-            }}
-          >
-            {/* <Button type="submit" variant="destructive">
-              Delete
-            </Button> */}
-          </form>
+          {image.userId === currentUser.userId ? (
+            <form
+              action={async () => {
+                "use server";
+                await deleteMyImage(idAsNumber);
+              }}
+            >
+              <Button type="submit" variant="destructive">
+                Delete
+              </Button>
+            </form>
+          ) : null}
         </div>
       </div>
     </div>
