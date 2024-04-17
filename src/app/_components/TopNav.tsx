@@ -1,14 +1,12 @@
 "use client";
 import { SignIn, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { UploadButton } from "~/lib/utils/uploadthing";
+
 import { ModeToggle } from "./ModeToggle";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { SimpleUploadButton } from "./SimpleUploadButton";
 
 export default function TopNav() {
-  const router = useRouter();
   return (
     <header className="flex items-center justify-between border-b-[1px] border-violet-800 bg-gradient-to-t from-violet-950 to-violet-800 px-4 py-4">
       <aside className="flex items-center gap-[2px]">
@@ -42,7 +40,9 @@ export default function TopNav() {
         <ModeToggle />
         <SignedIn>
           <SimpleUploadButton />
-          <UserButton />
+          <div className="min-w-12">
+            <UserButton />
+          </div>
         </SignedIn>
         <SignedOut>
           <SignIn />

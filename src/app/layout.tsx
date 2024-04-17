@@ -10,7 +10,12 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ThemeProvider } from "~/lib/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
-// import { CSPostHogProvider } from "./_analytics/provider";
+import { CSPostHogProvider } from "./_analytics/post-hog-provider";
+// import dynamic from "next/dynamic";
+
+// const PostHogPageView = dynamic(() => import("./_analytics/PosthogPageView"), {
+//   ssr: false,
+// });
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,27 +37,28 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      {/* <CSPostHogProvider> */}
-      <html lang="en">
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+      <CSPostHogProvider>
+        <html lang="en">
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <body className={`font-sans ${inter.variable}`}>
-            <div className="grid h-screen grid-rows-[auto,1fr]">
-              <TopNav />
-              <main className="overflow-y-scroll">{children}</main>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {/* <PostHogPageView /> */}
+              <div className="grid h-screen grid-rows-[auto,1fr]">
+                <TopNav />
+                <main className="overflow-y-scroll">{children}</main>
+              </div>
               {modal}
-            </div>
-            <div id="modal-root" />
-            <Toaster />
+              <div id="modal-root" />
+              <Toaster />
+            </ThemeProvider>
           </body>
-        </ThemeProvider>
-      </html>
-      {/* </CSPostHogProvider> */}
+        </html>
+      </CSPostHogProvider>
     </ClerkProvider>
   );
 }

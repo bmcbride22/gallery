@@ -6,6 +6,7 @@ import { getMyImages } from "~/server/queries";
 
 async function Images() {
   const images = await getMyImages();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
@@ -14,15 +15,15 @@ async function Images() {
         </h1>
         <div className="flex flex-wrap justify-center gap-6">
           {images.map((image) => (
-            <div key={image.id} className="relative w-48 p-4 sm:w-1/4">
-              <Link href={`/img/${image.id}`}>
+            <div key={image.id} className="relative h-64 w-64 p-4 sm:w-1/4">
+              <Link href={`/images/${image.id}`}>
                 <Image
                   src={image.url}
-                  style={{ objectFit: "contain" }}
-                  className="h-full w-full rounded-lg object-cover"
+                  style={{ objectFit: "cover" }}
+                  className="h-64 w-64 rounded-lg object-cover"
                   alt={image.name}
-                  height={240}
-                  width={240}
+                  height={208}
+                  width={208}
                 />
               </Link>
             </div>
@@ -35,7 +36,7 @@ async function Images() {
 
 export default async function HomePage() {
   return (
-    <main className="">
+    <div className="">
       <SignedOut>
         <div className="h-full w-full text-center text-2xl">
           Please sign in above
@@ -44,6 +45,6 @@ export default async function HomePage() {
       <SignedIn>
         <Images />
       </SignedIn>
-    </main>
+    </div>
   );
 }
